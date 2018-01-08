@@ -46,9 +46,10 @@ export async function rawConvert(code, options, state) {
 
 export default async function convert(
   code,
-  { componentName = 'SvgComponent', ...config } = {},
+  { componentName = 'SvgComponent', webpackFilePath = undefined, ...config } = {},
 ) {
   return rawConvert(code, configToOptions(config), {
     filePath: componentName,
+    webpackFilePath
   })
 }

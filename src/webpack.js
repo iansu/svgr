@@ -1,12 +1,25 @@
+import fs from 'fs';
 import loaderUtils from 'loader-utils'
 import convert from './'
 
 function svgrLoader(source) {
   const callback = this.async()
   const options = loaderUtils.getOptions(this) || {}
-  convert(source, options)
-    .then(result => callback(null, result))
-    .catch(err => callback(err))
+
+  const sourceIsFileExport = /^module.exports = (.*)/.test(source);
+
+  if (sourceIsFileExport) {
+    const originalSource = fs.readFileSync(this.resourcePath, 'utf8');
+    const webpackFilePath = source.match(/^module.exports = (.*);/)[1];
+
+    convert(originalSource, { webpackFilePath, ...options })
+      .then(result => callback(null, result))
+      .catch(err => callback(err))
+  } else {
+    convert(source, options)
+      .then(result => callback(null, result))
+      .catch(err => callback(err))
+  }
 }
 
 function svgrLoaderWithWarning(source) {
