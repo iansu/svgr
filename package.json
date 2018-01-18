@@ -34,6 +34,7 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
+    "babel-plugin-macros": "^2.0.0",
     "chalk": "^2.1.0",
     "commander": "^2.12.2",
     "glob": "^7.1.2",
